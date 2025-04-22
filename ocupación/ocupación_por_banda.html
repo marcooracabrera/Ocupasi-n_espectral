@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mediciones</title>
+    <link rel="stylesheet" href="./css/estilos.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: url("../images/unl.jpg") no-repeat center center/cover;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: -1;
+      }
+
+      .container {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        width: 33%; /* Ajusta el ancho */
+        max-height: 80vh; /* Evita que ocupe toda la pantalla */
+        overflow-y: auto; /* Permite desplazamiento vertical */
+        position: absolute;
+        top: 50.5%;
+        left: 40%;
+        transform: translate(-50%, -50%);
+      }
+
+      h1 {
+        color: #b30e0e;
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 50px;
+        max-width: 100%;
+      }
+
+      .gallery-item {
+        width: 290px;
+        text-align: center;
+        background: rgba(52, 189, 24, 0.8); /* Cambia este color */
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .gallery-item:hover {
+        transform: scale(1.05);
+      }
+
+      .gallery-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .gallery-description {
+        margin-top: 10px;
+        font-size: 16px;
+        color: #333;
+      }
+
+      .btn-back {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: #2091f9;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background 0.3s ease;
+      }
+
+      .btn-back:hover {
+        background: #1676d1;
+      }
+
+      /* Estilos para el botón desplegable */
+      .dropdown {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      .dropdown select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background: white;
+        cursor: pointer;
+      }
+
+      /* Estilos para la imagen ampliada */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 50%;
+        max-width: 600px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .modal-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .close-btn {
+        margin-top: 15px;
+        background: red;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+      }
+
+      .close-btn:hover {
+        background: darkred;
+      }
+      /* Contenedor principal con flexbox */
+      .main-container {
+        display: flex;
+        justify-content: center; /* Centra los elementos en la página */
+        align-items: center;
+        gap: 20px; /* Espacio entre los elementos */
+        width: 100%;
+        height: 100vh;
+        position: relative;
+      }
+
+      .occupancy-box {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 50%; /* Se mantiene grande, pero se desplaza */
+        margin-left: -10%; /* Mueve un poco a la izquierda */
+      }
+
+      .table-container {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 21%;
+        max-width: 600px;
+        max-height: 70vh; /* Limita la altura */
+        overflow: auto; /* Permite el desplazamiento en ambos ejes */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        right: 2%;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .table-container::-webkit-scrollbar {
+        width: 8px; /* Hace la barra más delgada */
+      }
+
+      /* Estilo del track (fondo de la barra de desplazamiento) */
+      .table-container::-webkit-scrollbar-track {
+        background: rgba(200, 200, 200, 0.2); /* Un color muy difuminado */
+        border-radius: 10px;
+      }
+
+      /* Estilo del thumb (la parte que se mueve) */
+      .table-container::-webkit-scrollbar-thumb {
+        background: rgba(100, 100, 100, 0.3); /* Más transparente */
+        border-radius: 10px;
+        transition: background 0.3s ease;
+      }
+
+      /* Cuando pasas el cursor sobre la barra, se hace un poco más visible */
+      .table-container::-webkit-scrollbar-thumb:hover {
+        background: rgba(100, 100, 100, 0.5);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f4f4f4;
+      }
+      /* Contenedor de la imagen con scroll */
+      .image-container {
+        width: 100%; /* Evita que la imagen toque los extremos */
+        max-height: 70vh; /* Limita la altura */
+        overflow-y: auto; /* Permite desplazamiento vertical */
+        display: flex;
+        justify-content: flex-start; /* Asegura que la imagen se alinee desde el inicio */
+        align-items: flex-start; /* Evita cualquier centrado vertical */
+        padding: 0; /* Elimina cualquier relleno interno */
+        margin: 0; /* Asegura que no haya márgenes extra */
+      }
+
+      /* Imagen dentro del modal */
+      .modal-img {
+        width: 100%; /* Ajusta el ancho de la imagen dentro del contenedor */
+        height: auto; /* Mantiene la proporción */
+        max-height: 100%; /* No supera el tamaño del contenedor */
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="btn-back">← Volver</a>
+
+    <!-- Botón desplegable para seleccionar banda -->
+    <div class="dropdown">
+      <select id="bandaSelector" onchange="cambiarBanda()">
+        <option value="915MHz">Banda 915MHz</option>
+        <option value="2.4GHz">Banda 2.4GHz</option>
+        <option value="Ocupación Total">Ocupación Total</option>
+      </select>
+    </div>
+
+    <div class="container">
+      <h1>Nivel de Ocupasción</h1>
+      <div class="gallery" id="gallery">
+        <!-- Se llena dinámicamente con JavaScript -->
+      </div>
+    </div>
+
+    <!-- Modal para mostrar imagen ampliada -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="image-container">
+          <img id="modal-img" class="modal-img" src="" alt="Imagen ampliada" />
+        </div>
+        <br />
+        <button class="close-btn" onclick="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+    <script>
+      const bandas = {
+        "915MHz": [
+          {
+            img: "oc_total_915mhz/1.png",
+            desc: "Ocupación en las zonas de medición de la banda 915MHz",
+          },
+        ],
+        "2.4GHz": [
+          {
+            img: "oc_total_2.4ghz/1.png",
+            desc: "Ocupación en las zonas de medición de la banda 2.4GHz",
+          },
+        ],
+        "Ocupación Total": [
+          {
+            img: "oc_general_915_2.4/1.png",
+            desc: "Ocupación general en el área de estudio en las dos banda",
+          },
+        ],
+      };
+
+      function cambiarBanda() {
+        const bandaSeleccionada =
+          document.getElementById("bandaSelector").value;
+        const gallery = document.getElementById("gallery");
+        gallery.innerHTML = "";
+
+        bandas[bandaSeleccionada].forEach((medicion) => {
+          const item = document.createElement("div");
+          item.className = "gallery-item";
+          item.innerHTML = `
+            <img src="${medicion.img}" alt="Medición" class="gallery-img" onclick="ampliarImagen('${medicion.img}')" />
+            <p class="gallery-description">${medicion.desc}</p>
+          `;
+          gallery.appendChild(item);
+        });
+      }
+
+      function ampliarImagen(src) {
+        document.getElementById("modal-img").src = src;
+        document.getElementById("modal").style.display = "flex";
+      }
+
+      function cerrarModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+
+      // Cargar la banda por defecto (915MHz)
+      cambiarBanda();
+    </script>
+    <div class="table-container">
+      <!-- Tabla para la Banda 915 MHz -->
+      <table class="occupancy-table" id="table-915">
+        <caption>
+          Banda 915 MHz
+        </caption>
+        <thead>
+          <tr>
+            <th></th>
+            <th>FBO (%)</th>
+            <th>AB Libre (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Punto 1</td>
+            <td>1.35%</td>
+            <td>98.65%</td>
+          </tr>
+          <tr>
+            <td>Punto 2</td>
+            <td>1.99%</td>
+            <td>98.01%</td>
+          </tr>
+          <tr>
+            <td>Punto 3</td>
+            <td>0.44%</td>
+            <td>99.56%</td>
+          </tr>
+          <tr>
+            <td>Punto 4</td>
+            <td>61.88%</td>
+            <td>38.13%</td>
+          </tr>
+          <tr>
+            <td>Punto 5</td>
+            <td>52.27%</td>
+            <td>47.73%</td>
+          </tr>
+          <tr>
+            <td>Punto 6</td>
+            <td>0.72%</td>
+            <td>99.28%</td>
+          </tr>
+          <tr>
+            <td>Punto 7</td>
+            <td>11.01%</td>
+            <td>88.99%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Tabla para la Banda 2.4 GHz -->
+      <table class="occupancy-table" id="table-24" style="display: none">
+        <caption>
+          Bandas
+        </caption>
+        <thead>
+          <tr>
+            <th>Banda</th>
+            <th>FBO (%)</th>
+            <th>AB Libre (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Banda 915MHz</td>
+            <td>18.52%</td>
+            <td>81.48%</td>
+          </tr>
+          <tr>
+            <td>Banda 2.4GHz</td>
+            <td>38.56%</td>
+            <td>61.44%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="../js/script.js"></script>
+  </body>
+</html>

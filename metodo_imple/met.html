@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/estilos.css" />
+    <link rel="stylesheet" href="../css/normalize.css" />
+    <title>Procedimiento</title>
+    <style>
+      /* Reiniciar márgenes y relleno */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      /* Contenedor del fondo borroso */
+      .bg {
+        position: fixed; /* Para que ocupe toda la ventana y no se mueva */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("ruta-de-tu-imagen.jpg") no-repeat center center;
+        background-size: cover;
+        filter: blur(100px); /* Ajusta el nivel de desenfoque aquí */
+        -webkit-filter: blur(100px);
+        z-index: -1; /* Para que quede por detrás del contenido */
+      }
+
+      body {
+        font-family: "Times New Roman", Times, serif, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        background: url("../images/unl.jpg") no-repeat center center fixed;
+        background-size: cover;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.8); /* Contenedor semi-transparente */
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      h1 {
+        text-align: center;
+        font-size: 2em;
+        color: #333;
+      }
+      h2 {
+        font-size: 1.8em;
+        color: #444;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 5px;
+      }
+      h3 {
+        font-size: 1.5em;
+        color: #555;
+      }
+      h4 {
+        font-size: 1.3em;
+        color: #666;
+      }
+      h5 {
+        font-size: 1.1em;
+        color: #777;
+      }
+      table {
+        width: 60%; /* Ajusta el ancho de la tabla */
+        margin: 20px auto; /* Centra la tabla horizontalmente */
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid black;
+        padding: 10px;
+        text-align: center;
+      }
+      img {
+        display: block;
+        margin: 20px auto;
+        max-width: 100%;
+      }
+      .formula {
+        font-family: "Courier New", Courier, monospace;
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+        display: inline-block;
+      }
+      .btn-back {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: #2091f9;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background 0.3s ease;
+      }
+
+      .btn-back:hover {
+        background: #1676d1;
+      }
+    </style>
+  </head>
+  <div class="container">
+    <body>
+      <a href="../index.html" class="btn-back">← Volver</a>
+      <h1>Procedimiento</h1>
+      <h2>Selección de dispositivos</h2>
+      <h3>Analizador de espectro</h3>
+      <p class="justificado">
+        Su función básica es representar las señales en una pantalla gráfica
+        como amplitud (o como nivel de potencia) en el eje "y", frente a la
+        frecuencia en el eje "x", las amplitudes de las señales detectadas se
+        representan en el dominio de la frecuencia (rohde&schwarz, s.f.).
+      </p>
+      <p><strong>Caracteristicas del analizador de espectro</strong></p>
+      <table>
+        <tr>
+          <th>Parámetros</th>
+          <th>ANRITSU MT8212B</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td><img src="imagenes/Anritsu.png" alt="Rango de frecuencias" /></td>
+        </tr>
+        <tr>
+          <td>Rango de Frecuencias</td>
+          <td>100 KHz - 3.0 GHz</td>
+        </tr>
+        <tr>
+          <td>Sencibilidad</td>
+          <td>-135 dBm con pre-amp, -115 dBm sin pre-amp</td>
+        </tr>
+        <tr>
+          <td>Alimentación</td>
+          <td>DC 12V</td>
+        </tr>
+        <tr>
+          <td>Batería</td>
+          <td>1800 mA NiMH</td>
+        </tr>
+        <tr>
+          <td>Software</td>
+          <td>Compatible con Handheld Software Tools</td>
+        </tr>
+        <tr>
+          <td>Espectrograma</td>
+          <td>Incorporado en el equipo, portabilidad</td>
+        </tr>
+        <tr>
+          <td>Almacenamiento</td>
+          <td>Hasta 200 trazos</td>
+        </tr>
+        <tr>
+          <td>Comunicación con PC</td>
+          <td>USB – RS232 DB9 NULL MODEM</td>
+        </tr>
+        <tr>
+          <td>RF IN</td>
+          <td>Tipo N 50 ohm</td>
+        </tr>
+      </table>
+
+      <h3>Antena</h3>
+      <p class="justificado">
+        Para lograr una correcta asimilación de la radiación dispersa en el
+        medio ambiente, se precisa de una antena que tenga una buena ganancia y
+        considerable ancho de banda, que se relaciona con el alcance o la
+        superficie que puede cubrir, permitiendo obtener mayor precisión y
+        mejorando la calidad de los datos presentes en el estudio.
+      </p>
+      <p><strong>Características de la antena</strong></p>
+      <table>
+        <tr>
+          <th>Parámetros</th>
+          <th>HyperLOG 7060</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <img src="imagenes/Hyper-LOG.png" alt="Rango de frecuencias" />
+          </td>
+        </tr>
+        <tr>
+          <td>Directividad</td>
+          <td>Direccional</td>
+        </tr>
+        <tr>
+          <td>Diseño</td>
+          <td>Log-periodical</td>
+        </tr>
+        <tr>
+          <td>Ganancia(typ.)</td>
+          <td>5dBi</td>
+        </tr>
+        <tr>
+          <td>Conexión RF</td>
+          <td>SMA (f) o N con adaptador</td>
+        </tr>
+        <tr>
+          <td>Rango de frecuencia</td>
+          <td>700 MHz – 6 GHz</td>
+        </tr>
+        <tr>
+          <td>Impedancia nominal</td>
+          <td>50 ohm</td>
+        </tr>
+        <tr>
+          <td>VSWR (typ.)</td>
+          <td>< 2</td>
+        </tr>
+      </table>
+      <h3>Directividad</h3>
+      <p>
+        Según la recomendación de la (UIT-R, 2016) para que los resultados sean
+        válidos dentro de un determinado radio respecto del lugar de
+        observación, es necesario utilizar una antena no direccional.
+      </p>
+      <p>
+        En los casos que se indican a continuación se habrá de utilizar una
+        antena de medición direccional:
+      </p>
+      <ul>
+        <li>
+          La medición debe mostrar la ocupación de una ubicación y servicio
+          específicos que también utilizan antenas direccionales.
+        </li>
+        <li>
+          El resultado de la medición debe ser válido para una zona no
+          distribuida uniformemente alrededor del lugar de observación.
+        </li>
+      </ul>
+      <p class="justificado">
+        En vista de las condiciones planteadas para el uso de antenas
+        direccionales, se ha considerado la geografía de la ciudad de Loja, su
+        superficie irregular con elevaciones pronunciadas provoca variaciones
+        significativas en la propagación de la señal, esto hace que el uso de la
+        antena Hyper-LOG HF-7060 de la marca AARONIA, se considere como la mejor
+        opción para obtener mediciones precisas, ya que, permite enfocar la
+        señal en zonas específicas
+      </p>
+      <h3>Tipo de cable</h3>
+      <p class="justificado">
+        El cable tiene un impacto directo en la calidad de la señal y la
+        precisión de las mediciones, un buen cable lleva las señales captadas
+        por la antena al analizador sin degradaciones significativas, lo que
+        reduce errores asociados a la interferencia o perdidas excesivas.
+      </p>
+      <p><strong>Características del cable de radiofrecuencia</strong></p>
+      <table>
+        <tr>
+          <th>Parámetros</th>
+          <th>RPM 517 6906/01</th>
+        </tr>
+        <tr>
+          <td></td>
+          <td><img src="imagenes/cable.png" alt="Rango de frecuencias" /></td>
+        </tr>
+        <tr>
+          <td>Tipo de cable</td>
+          <td>Coaxial de alto rendimiento</td>
+        </tr>
+        <tr>
+          <td>Frecuencia</td>
+          <td>Hasta 6 GHz</td>
+        </tr>
+        <tr>
+          <td>Impedancia</td>
+          <td>50 ohm</td>
+        </tr>
+        <tr>
+          <td>Perdidas (dB/m)</td>
+          <td>0.14 dB/m – 0.25 dB/m</td>
+        </tr>
+        <tr>
+          <td>Pantalla de blindaje</td>
+          <td>Alta (cobre trenzado + hoja de cobre)</td>
+        </tr>
+        <tr>
+          <td>Conector</td>
+          <td>N - TNC</td>
+        </tr>
+        <tr>
+          <td>Aplicaciones</td>
+          <td>Medición de precisión en altas frecuencias</td>
+        </tr>
+      </table>
+      <h3>Unidad de procesamiento externo</h3>
+      <p class="justificado">
+        La gestión de las mediciones realizadas con el ANRITSU, necesitan una
+        unidad externa que realice la función de procesamiento y almacenamiento
+        de datos, esta unidad debe ser compatible con el analizador de espectro,
+        ya que, el modelo MT8212B funciona con el programa Handheld Software
+        Tools desarrollado y soportado hasta el año 2007, compatible con los
+        sistemas operativos Windows XP y Windows Vista de 32 bits (Anritsu,
+        2015).
+      </p>
+      <img src="imagenes/winxp.png" alt="Ubicación Punto 1" />
+      <h3>Cable adaptador USB a SERIE</h3>
+      <p class="justificado">
+        El cable adaptador permite tener una comunicación bidireccional entre el
+        analizador de espectro y la computadora encargada del almacenamiento y
+        procesamiento de las mediciones, el cable debe tener la característica
+        de ser Null Modem véase la figura 7, sin esta característica el
+        analizador no puede entrar al funcionamiento remoto, y los archivos .SPG
+        no se pueden descargar .
+      </p>
+      <p><strong>Pines del cable Null-Modem</strong></p>
+      <img src="imagenes/pine_null.png" alt="Ubicación Punto 1" />
+      <h1>Proceso de evaluación</h1>
+      <p>
+        Para el proceso de medir y evaluar la ocupación en las bandas 915MHZ y
+        2.4GHz, en el presente estudio se implementó la recomendación de la
+        (UIT-R, 2016), la cual plantea una estructura detallada para el proceso,
+        con diferentes parámetros a considerar para presentar los datos de la
+        utilización racional, equitativa y eficaz del espectro. A continuación,
+        se detallan los parámetros que influyen de forma directa en el estudio.
+      </p>
+      <h2>Área de estudio</h2>
+      <p>
+        El presente Trabajo, se desarrolló en el casco urbano central de la
+        ciudad de Loja (regeneración urbana), abarcando aproximadamente 170
+        hectáreas, esta área se caracteriza por la convergencia de la mayoría de
+        actividades comerciales, educativas y culturales de la ciudad (UTPL,
+        2023), que comprende las calles: Av. Universitaria, chile, 18 de
+        Noviembre, Av. Gobernación de Mainas, Eduardo Kigman, Sozoranga,
+        Gonzales Suarez, José Joaquín de Olmedo, Andrés Bello, Juan José Peña,
+        Catacocha y la Av. Emiliano Ortega. A continuación, se define y delimita
+        el área de estudio y se presentan las calles más relevantes que
+        encierran esta superficie geográfica.
+      </p>
+      <p><strong>Delimitación geográfica del casco urbano central</strong></p>
+
+      <img src="imagenes/casco_ur.png" alt="Ubicación Punto 1" />
+      <h3>Diagrama de la arquitectura del sistema</h3>
+      <p>
+        El sistema completo de monitoreo se lo detalla en la figura, en donde se
+        plantea las diferentes interconexiones que se van a tener para el
+        correcto desempeño de los equipos.
+      </p>
+      <p><strong>Arquitectura del sistema de mnitoreo</strong></p>
+      <img src="imagenes/aerqui_del_sis.png" alt="Ubicación Punto 1" />
+      <h3>Zona de medición</h3>
+      <p>
+        Tal como indica la (UIT-R, 2016), por zona de medición se entiende la
+        zona en la que los resultados de la ocupación son válidos, es decir, el
+        grado de la ocupación se considera representativo de cualquier lugar
+        dentro de la zona de medición, no solamente del lugar donde se encuentra
+        la antena de comprobación técnica.
+      </p>
+      <p>
+        Para determinar la ocupación dentro del área de estudio, se la dividió
+        en diferentes puntos que vendrían a ser las zonas de medición,
+        considerando varios parámetros, como la actividad comercial, el tránsito
+        peatonal, el uso del espacio (comercial o residencial) y la cobertura de
+        los instrumentos de medición.
+      </p>
+      <h4>• Cobertura de los instrumentos de medición</h4>
+      <p>
+        La cobertura de los instrumentos se determina aplicando el modelo de
+        propagación Walfisch-Bertoni, también conocido como “modelo de pantallas
+        de difracción”. Este modelo permite estimar las pérdidas de propagación
+        en ambientes urbanos considerando la difracción de la señal en el techo
+        de los edificios. El modelo de Walfisch-Bertoni es aplicable para las
+        frecuencias comprendidas entre 300 MHz y 3 GHz (Pérez et al., 2012).
+      </p>
+      <p class="formula">
+        L(dB) = 89.55 + A + 21 log(f) + 38 log(d) - 18 (h<sub>eb</sub> -
+        h<sub>ed</sub>) - 18 log[1 - d²/17(h<sub>eb</sub> - h<sub>ed</sub>)]
+      </p>
+
+      <p>
+        Donde A es el factor que incorpora las perdidas por efecto de los
+        edificios y se determina de la siguiente manera:
+      </p>
+      <p class="formula">
+        A = 5 log[(w/2)² + (h<sub>ed</sub> - h<sub>m</sub>)²] - 9 log(w) + 20
+        log{tan⁻¹ [2(h<sub>ed</sub> - h<sub>m</sub>)/w]}
+      </p>
+      <p>Donde:</p>
+      <ul>
+        <p>
+          <strong>h<sub>eb</sub></strong
+          >: Altura de la antena de la estación radio base (m).
+        </p>
+
+        <p>
+          <strong>h<sub>m</sub></strong
+          >: Altura de la antena móvil (m).
+        </p>
+
+        <p>
+          <strong>h<sub>ed</sub></strong
+          >: Altura promedio de los edificios (m).
+        </p>
+
+        <p><strong>w</strong>: Separación entre edificios (m).</p>
+      </ul>
+
+      <p>
+        El modelo de propagación determina las perdidas considerando cierta
+        distancia, estas pérdidas en comparación con el presupuesto del enlace
+        van a ser menores o iguales.
+      </p>
+      <p class="formula">
+        P<sub>e</sub> = P<sub>TX</sub> - P<sub>ctx</sub> + G<sub>TX</sub> +
+        G<sub>RX</sub> - P<sub>RX</sub> - S<sub>RX</sub>
+      </p>
+      <p>Donde:</p>
+      <ul>
+        <p>
+          <strong>P<sub>TX</sub></strong
+          >: Potencia del transmisor [dBm]
+        </p>
+
+        <p>
+          <strong>P<sub>ctx</sub></strong
+          >: Pérdida en el cable de TX [dB]
+        </p>
+        <p>
+          <strong>G<sub>TX</sub></strong
+          >: Ganancia de antena de TX [dBi]
+        </p>
+        <p>
+          <strong>G<sub>RX</sub></strong
+          >: Ganancia de antena de RX [dBi]
+        </p>
+        <p>
+          <strong>P<sub>RX</sub></strong
+          >: Pérdidas en el cable de RX [dB]
+        </p>
+        <p>
+          <strong>S<sub>RX</sub></strong
+          >: Sensibilidad del RX [dBm]
+        </p>
+        <p>
+          Esta relación se la puede justificar con el margen de desvanecimiento
+          que es la potencia extra de señal que un enlace necesita para
+          asegurarse que continuara en funcionamiento, aunque sufra efectos
+          anómalos (Monachesi et al., 2013). Sin embargo, este valor en algunos
+          casos puede ser despreciable y no aportar significativamente a la
+          estabilidad o rendimiento general del enlace.
+        </p>
+        <p class="formula">
+          M<sub>d</sub> = P<sub>TX</sub> - P<sub>ctx</sub> + G<sub>TX</sub> +
+          G<sub>RX</sub> - P<sub>RX</sub> - S<sub>(RX)</sub> - L(dB) (4)
+        </p>
+        <p>O,</p>
+        <p class="formula">
+          M<sub>d</sub> = presupuesto del enlace - L(dB) (5)
+        </p>
+        <p>Donde:</p>
+        <ul>
+          <b>L(dB)</b
+          >: Pérdidas en la propagación en espacio libre [dB]
+          <p>
+            <b>M<sub>d</sub></b
+            >: Margen de desvanecimiento [dBm]
+          </p>
+        </ul>
+        <h5>Primer Paso</h5>
+        <p>
+          Calculamos el presupuesto del enlace usando los datos de la siguiente
+          tabla.
+        </p>
+        <p><strong>Parámetros usados en el presupuesto del enlace</strong></p>
+        <table border="1">
+          <tr>
+            <th>Parámetros</th>
+            <th>P_TX</th>
+            <th>P_ctx</th>
+            <th>G_TX</th>
+            <th>G_RX</th>
+            <th>P_RX</th>
+            <th>S_(RX)</th>
+          </tr>
+          <tr>
+            <td>915MHz</td>
+            <td>20dBm</td>
+            <td>-0dBm</td>
+            <td>3dBi</td>
+            <td>5dBi</td>
+            <td>0.142 dB/m</td>
+            <td>-135dBm</td>
+          </tr>
+          <tr>
+            <td>2.4GHz</td>
+            <td>20dBm</td>
+            <td>-0dBm</td>
+            <td>3dBi</td>
+            <td>5dBi</td>
+            <td>0.25 dB/m</td>
+            <td>-115dBm</td>
+          </tr>
+        </table>
+        <p><strong>Para 915MHz:</strong></p>
+        <p class="formula">
+          P<sub>e</sub> = 20dBm - 0 + 3dBi + 5dBi - 0.284dB - (-135dBm) =
+          162.71dB
+        </p>
+        <p><strong>Para 2.4GHz:</strong></p>
+        <p class="formula">
+          P<sub>e</sub> = 20dBm - 0 + 3dBi + 5dBi - 0.5dB - (-115dBm) = 142.5dB
+        </p>
+        <h5>Segundo Paso</h5>
+        <p>
+          Obtenido el presupuesto para cada una de las bandas se podría empezar
+          con estimación de las pérdidas de propagación, para lo cual, primero
+          se va a calcular las pérdidas por efecto de los edificios (A):
+        </p>
+        <p>
+          <strong
+            >Parámetros considerados en las pérdidas por efecto de los
+            edificios</strong
+          >
+        </p>
+        <table border="1">
+          <tr>
+            <th>Parámetros</th>
+            <th>Valores</th>
+          </tr>
+          <tr>
+            <td>w</td>
+            <td>11m</td>
+          </tr>
+          <tr>
+            <td>h_ed</td>
+            <td>9m</td>
+          </tr>
+          <tr>
+            <td>h_m</td>
+            <td>4m</td>
+          </tr>
+        </table>
+        <p>
+          <em>
+            Nota. La separación entre edificios w se la puede promediar con
+            ayuda de la memoria técnica del plan de la regeneración urbana en la
+            sección de descripción por cada tramo de intervención y h_ed por
+            medio de la observación se determina el promedio de altura de las
+            estructuras civiles.</em
+          >
+        </p>
+        <p class="formula">
+          A = 5 log[(11/2)<sup>2</sup> + (9-4)<sup>2</sup>] - 9 log(11) + 20
+          log{tan<sup>-1</sup>[2(9-4)/11]}
+        </p>
+        <p class="formula">A = 31.21dB</p>
+        <p><strong>Para 915 MHz</strong></p>
+        <p>
+          Una vez calculado el factor de pérdidas por los edificios, se procede
+          a obtener las pérdidas por propagación, como no se sabe la distancia
+          que se puede cubrir, se va a iterar a los 200m, 300m, 400m, 500m,
+          600m, 700m, 800m y 900m, tratando de que se cumpla la condición de que
+          las pérdidas de propagación ≤ presupuesto del enlace.
+        </p>
+        <p>
+          <strong
+            >Parámetros a considerar en las pérdidas de propagación en
+            915MHz</strong
+          >
+        </p>
+        <table border="1">
+          <tr>
+            <th>Parámetros</th>
+            <th>Valores</th>
+          </tr>
+          <tr>
+            <td>h_eb</td>
+            <td>10m</td>
+          </tr>
+          <tr>
+            <td>h_ed</td>
+            <td>9m</td>
+          </tr>
+          <tr>
+            <td>f</td>
+            <td>915MHz</td>
+          </tr>
+        </table>
+        <p>
+          <em>
+            Nota: h_eb se considera mas alto que el promedio de los edificios,
+            en la banda de 2.4GHz el valor sería más bajo que la altura de los
+            edificios, pero al promediar con la altura que vendría a tener una
+            antena en la banda 915MHz este valor aumenta.</em
+          >
+        </p>
+        <p class="formula">
+          L(dB) = 89.55 + 31.21 + 21 log(915) + 38 log(0.2) - 18(10-9) - 18
+          log[1 - (0.2)<sup>2</sup> / 17(10-9)]
+        </p>
+        <p class="formula">L(dB) = 138.39dB</p>
+        <p><strong>Pérdidas de propagación en la banda 915MHz</strong></p>
+        <table border="1">
+          <tr>
+            <th>d (m)</th>
+            <th>200</th>
+            <th>300</th>
+            <th>400</th>
+            <th>...</th>
+            <th>800</th>
+            <th>900</th>
+          </tr>
+          <tr>
+            <td>L(dB)</td>
+            <td>138.39</td>
+            <td>145.11</td>
+            <td>147.20</td>
+            <td>...</td>
+            <td>161.55</td>
+            <td>163.59</td>
+          </tr>
+        </table>
+        <p class="formula">P<sub>e</sub> = 162.71dB</p>
+        <p class="formula">M<sub>d</sub> + L(dB) = presupuesto del enlace</p>
+        <p class="formula">161.55dB ≤ 162.71dB</p>
+        <p><strong>Para 2.4 GHz</strong></p>
+        <p>
+          En el caso de esta banda se va a iterar a los 100m, 150m y 200m
+          tratando de que se cumpla la condición de que las pérdidas de
+          propagación ≤ presupuesto del enlace.
+        </p>
+        <p>
+          <strong
+            >Parámetros a considerar en las pérdidas de propagación en 2.4
+            GHz</strong
+          >
+        </p>
+        <table border="1">
+          <tr>
+            <th>Parámetros</th>
+            <th>Valores</th>
+          </tr>
+          <tr>
+            <td>h_eb</td>
+            <td>10m</td>
+          </tr>
+          <tr>
+            <td>h_ed</td>
+            <td>9m</td>
+          </tr>
+          <tr>
+            <td>f</td>
+            <td>2.4GHz</td>
+          </tr>
+        </table>
+        <p>
+          <em>
+            Nota. h_eb se considera mas alto que el promedio de los edificios,
+            en la banda de 2.4GHz el valor sería más bajo que la altura de los
+            edificios, pero al promediar con la altura que vendría a tener una
+            antena en la banda 915MHz este valor aumenta.</em
+          >
+        </p>
+        <p class="formula">
+          L(dB) = 89.55 + 31.21 + 21 log(2400) + 38 log(0.1) - 18(10-9) - 18
+          log[1 - (0.1)<sup>2</sup> / 17(10-9)]
+        </p>
+        <p class="formula">L(dB) = 135.74dB</p>
+        <p>
+          <strong>Pérdidas de propagación en la banda 2.4GHz</strong>
+        </p>
+        <table border="1">
+          <tr>
+            <th>d (m)</th>
+            <th>100</th>
+            <th>150</th>
+            <th>200</th>
+          </tr>
+          <tr>
+            <td>L(dB)</td>
+            <td>135.74</td>
+            <td>142.44</td>
+            <td>147.20</td>
+          </tr>
+        </table>
+        <p class="formula">P<sub>e</sub> = 142.5dB</p>
+        <p class="formula">M<sub>d</sub> + L(dB) = presupuesto del enlace</p>
+        <p class="formula">142.44 ≤ 142.5</p>
+      </ul>
+      <h5>Tercer paso</h5>
+      <p>
+        En base a las distancias correspondientes con las que se iteraron y los
+        demás criterios que se consideraron para determinar una zona de medición
+        adecuada, para las dos bandas de frecuencias ISM. En el caso de la banda
+        915MHz, aunque la superficie a cubrir puede llegar hasta los 800m, se ha
+        determinado por la geografía del área, limitar esta superficie hasta los
+        300m y 320m, dividiendo la zona de estudio en siete puntos como se lo
+        puede ver en la figura.
+      </p>
+      <p><strong>Puntos de medición de la banda 915MHz</strong></p>
+      <img src="imagenes/puntos_medi_915mhz.png" alt="Ubicación Punto 1" />
+      <p>
+        La ubicación geográfica en coordenadas de longitud y latitud de los
+        puntos o zonas de medición se los detalla en la siguiente tabla.
+      </p>
+      <p>
+        <strong>Coordenadas de las zonas de medición en la banda 915MHz</strong>
+      </p>
+      <table>
+        <tr>
+          <th>Puntos de interés</th>
+          <th>Latitud</th>
+          <th>Longitud</th>
+        </tr>
+        <tr>
+          <td>Punto 1</td>
+          <td>3°59'32.91"S</td>
+          <td>79°12'12.58"O</td>
+        </tr>
+        <tr>
+          <td>Punto 2</td>
+          <td>3°59'49.99"S</td>
+          <td>79°12'11.24"O</td>
+        </tr>
+        <tr>
+          <td>Punto 3</td>
+          <td>4°0'09.01"S</td>
+          <td>79°12'09.74"O</td>
+        </tr>
+        <tr>
+          <td>Punto 4</td>
+          <td>4°0'26.94"S</td>
+          <td>79°12'08.74"O</td>
+        </tr>
+        <tr>
+          <td>Punto 5</td>
+          <td>4°0'46.12"S</td>
+          <td>79°12'06.27"O</td>
+        </tr>
+        <tr>
+          <td>Punto 6</td>
+          <td>3°59'45.88"S</td>
+          <td>79°11'57.03"O</td>
+        </tr>
+        <tr>
+          <td>Punto 7</td>
+          <td>4°0'04.32"S</td>
+          <td>79°11'55.60"O</td>
+        </tr>
+      </table>
+      <p>
+        En el caso de la banda 2.4GHz, la superficie a cubrir se limita
+        aproximadamente hasta los 150m, por lo cual se usó distancias de 140m
+        para zonas más comerciales con alta densidad de personas y los 150m se
+        lo destino para zonas más residenciales con menor densidad de personas,
+        dando un total de 24 puntos en toda el área de estudio, en este caso por
+        el tamaño y la visibilidad se optó por dividir el mapa en dos figuras y
+        cuyas coordenadas se detallan en la tabla.
+      </p>
+      <p>
+        <strong>Puntos de medición de la banda 2.4GHz (punto 1 – 21)</strong>
+      </p>
+      <img src="imagenes/puntos_medi_2.4ghz_par1.png" alt="Ubicación Punto 1" />
+      <p>
+        <strong>Puntos de medición de la banda 2.4GHz (punto 22 – 24)</strong>
+      </p>
+      <img src="imagenes/puntos_medi_2.4ghz_par2.png" alt="Ubicación Punto 1" />
+      <p>
+        <strong>Coordenadas de las zonas de medición en la banda 2.4GHz</strong>
+      </p>
+      <table>
+        <tr>
+          <th>Puntos de interés</th>
+          <th>Latitud</th>
+          <th>Longitud</th>
+        </tr>
+        <tr>
+          <td>Punto 1</td>
+          <td>3°59'27.28"S</td>
+          <td>79°12'15.76"O</td>
+        </tr>
+        <tr>
+          <td>Punto 2</td>
+          <td>3°59'29.63"S</td>
+          <td>79°12'10.60"O</td>
+        </tr>
+        <tr>
+          <td>Punto 3</td>
+          <td>3°59'36.07"S</td>
+          <td>79°12'15.71"O</td>
+        </tr>
+        <tr>
+          <td>Punto 4</td>
+          <td>3°59'35.30"S</td>
+          <td>79°12'08.51"O</td>
+        </tr>
+        <tr>
+          <td>Punto 5</td>
+          <td>3°59'43.42"S</td>
+          <td>79°12'15.14"O</td>
+        </tr>
+        <tr>
+          <td>Punto 6</td>
+          <td>3°59'42.80"S</td>
+          <td>79°12'07.90"O</td>
+        </tr>
+        <tr>
+          <td>Punto 7</td>
+          <td>3°59'42.34"S</td>
+          <td>79°12'01.15"O</td>
+        </tr>
+        <tr>
+          <td>Punto 8</td>
+          <td>3°59'50.32"S</td>
+          <td>79°12'14.59"O</td>
+        </tr>
+        <tr>
+          <td>Punto 9</td>
+          <td>3°59'49.57"S</td>
+          <td>79°12'07.33"O</td>
+        </tr>
+        <tr>
+          <td>Punto 10</td>
+          <td>3°59'49.20"S</td>
+          <td>79°12'00.62"O</td>
+        </tr>
+        <tr>
+          <td>Punto 11</td>
+          <td>3°59'48.68"S</td>
+          <td>79°11'53.33"O</td>
+        </tr>
+        <tr>
+          <td>Punto 12</td>
+          <td>3°59'57.84"S</td>
+          <td>79°12'13.95"O</td>
+        </tr>
+        <tr>
+          <td>Punto 13</td>
+          <td>3°59'57.24"S</td>
+          <td>79°12'06.89"O</td>
+        </tr>
+        <tr>
+          <td>Punto 14</td>
+          <td>3°59'56.84"S</td>
+          <td>79°12'00.03"O</td>
+        </tr>
+        <tr>
+          <td>Punto 15</td>
+          <td>3°59'57.31"S</td>
+          <td>79°11'52.50"O</td>
+        </tr>
+        <tr>
+          <td>Punto 16</td>
+          <td>4°00'05.25"S</td>
+          <td>79°12'13.37"O</td>
+        </tr>
+        <tr>
+          <td>Punto 17</td>
+          <td>4°00'04.91"S</td>
+          <td>79°12'06.32"O</td>
+        </tr>
+        <tr>
+          <td>Punto 18</td>
+          <td>4°00'04.51"S</td>
+          <td>79°11'59.49"O</td>
+        </tr>
+        <tr>
+          <td>Punto 19</td>
+          <td>4°00'07.77"S</td>
+          <td>79°11'49.41"O</td>
+        </tr>
+        <tr>
+          <td>Punto 20</td>
+          <td>4°00'11.21"S</td>
+          <td>79°11'59.03"O</td>
+        </tr>
+        <tr>
+          <td>Punto 21</td>
+          <td>4°00'13.46"S</td>
+          <td>79°12'09.48"O</td>
+        </tr>
+        <tr>
+          <td>Punto 22</td>
+          <td>4°00'22.85"S</td>
+          <td>79°12'09.08"O</td>
+        </tr>
+        <tr>
+          <td>Punto 23</td>
+          <td>4°00'32.19"S</td>
+          <td>79°12'08.28"O</td>
+        </tr>
+        <tr>
+          <td>Punto 24</td>
+          <td>4°00'41.41"S</td>
+          <td>79°12'06.59"O</td>
+        </tr>
+      </table>
+      <h3>Duración de la observación</h3>
+      <p>
+        La recomendación de la (UIT-R, 2016), establece que es el periodo de
+        tiempo total empleado para medir la ocupación:
+      </p>
+      <p>
+        El periodo de la observación para la obtención de información referida a
+        la radiación electromagnética tuvo una duración aproximada de 2 meses y
+        2 días, estableciendo un horario de media aleatoria en cada uno de los
+        puntos y en días distintos, la razón de elegir días diferentes y horas
+        aleatorias, es para aumentar la precisión estadística al distribuir las
+        mediciones, mejora la representatividad de los datos, reduciendo la
+        influencia de eventos que pueden ocurrir en ciertos y únicos momentos, y
+        también se pueden identificar comportamientos regulares o atípicos,
+        generando datos fiables evidenciando las tendencias del espectro.
+      </p>
+      <h3>Número de muestras</h3>
+      <p>
+        Para estimar el tiempo en el que se van a obtener las mediciones, hay
+        que tomar en cuenta que la banda de los 2.4GHz es mayormente ocupada por
+        sistemas Wi-Fi, que en Ecuador dispone de 13 canales (2.412GHz -
+        2.483GHz) (ARCOTEL, 2021), gran parte de estos canales se interfieren
+        por el solapamiento existente, de estos canales se tiene 3 que no se
+        interfieren con otros el 1, 6 y 11 (Intel, 2023). Por lo que se estima
+        que se observe más potencias altas en las frecuencias centrales de estos
+        canales.
+      </p>
+      <p>
+        Para conseguir una precisión con un intervalo de confianza estadístico
+        fiable es necesario estimar un número mínimo de muestras, si las
+        estaciones trasmiten las 24 horas del día de forma fluida, bastaría con
+        pocas muestras para conseguir datos confiables, cuando las trasmisiones
+        se reducen y por lo tanto la ocupación baja, es necesario un mayor
+        número de muestras para obtener la misma precisión (Viteri et al.,
+        2015).
+      </p>
+      <p>
+        El porcentaje de error con el que se va a trabajar al momento de escoger
+        el número de muestras, se lo obtiene al despejar y resolver la formula
+        (6), la cual es aplicada para tamaño de muestra de un grupo de una
+        población conocida, en donde el rango de porcentaje de error en la
+        muestra aceptable esta entre 0 - 5%, si se sobrepasa este porcentaje el
+        número de muestras es insuficiente por lo que los datos no serán fiables
+        (Viteri et al., 2015).
+      </p>
+      <p class="formula">m = N / ((N-1) k² + 1) (6)</p>
+      <p>Donde:</p>
+      <ul>
+        <p><strong>N</strong>: es el ancho de banda (Hz)</p>
+        <p><strong>k</strong>: es el porcentaje de error de la población</p>
+        <p><strong>m</strong>: es el número de muestras</p>
+      </ul>
+
+      <p>
+        Despejando <strong>k</strong> y realizando los cálculos pertinentes, se
+        obtiene como valor del porcentaje de error en la población de 4.99%,
+        encontrándose dentro del rango aceptable, por lo tanto, las 400 muestras
+        serían suficientes para determinarse como datos fiables.
+      </p>
+      <p class="formula">k = √((N - m) / (m (N - 1)))</p>
+
+      <p><strong>Para 915MHz</strong></p>
+      <p class="formula">
+        k = √((26000000 - 400) / (400 (26000000 - 1))) = 4.99%
+      </p>
+
+      <p><strong>Para 2.4GHz</strong></p>
+
+      <p class="formula">
+        k = √((71000000 - 400) / (400 (71000000 - 1))) = 4.99%
+      </p>
+
+      <h3>Tiempo de Iteración</h3>
+      <p>
+        Según la recomendación de la (UIT-R, 2016), el tiempo de iteración es el
+        tiempo necesario para barrer todos los canales que se han de medir
+        (estén o no estén ocupados) y volver al primer canal.
+      </p>
+
+      <p>
+        Durante las pruebas preliminares con el analizador de espectro, se
+        obtuvieron diversas métricas que permitieron analizar el comportamiento
+        del barrido en función del ancho de banda de resolución. Se evidenció
+        que la velocidad del barrido varía entre 3 y 6 segundos al usar un RBW
+        (Ancho de Banda de Resolución) de 100KHz en la banda de 2.4GHz. Sin
+        embargo, si el RBW se reduce a 10KHz en la banda de 915MHz, el tiempo de
+        iteración aumenta significativamente hasta alcanzar los 8 segundos.
+      </p>
+
+      <h3>Tiempo de Medición de Muestra (T<sub>M</sub>)</h3>
+      <p>
+        El tiempo de medición real de un canal o una banda fue determinado en
+        este estudio. En la banda de 915MHz, se estimó una duración de
+        <strong>11 horas con 40 minutos</strong>, mientras que en la banda de
+        2.4GHz se calculó un tiempo de <strong>40 horas</strong>.
+      </p>
+
+      <p>
+        Se planteó un periodo de tiempo de 10 segundos de corte, es decir, cada
+        10 segundos aproximadamente se toma una muestra. Este valor puede variar
+        debido al tiempo de iteración de cada barrido, que puede afectar la
+        duración total del escaneo. En algunos casos, el proceso puede tardar
+        hasta 20 minutos para completar las 80 muestras permitidas en una sola
+        medición.
+      </p>
+
+      <h3>Tiempo de Observación (T<sub>Obs</sub>)</h3>
+      <p>
+        Es el tiempo que necesita el sistema para realizar las mediciones,
+        incluyendo el procesamiento general, almacenamiento de resultados en
+        memoria/disco y la sintonización del receptor a la frecuencia deseada
+        (UIT-R, 2016).
+      </p>
+      <p class="formula">
+        T<sub>Obs</sub> = T<sub>M</sub> + tiempo de procesamiento (7)
+      </p>
+      <p>
+        El tiempo de procesamiento aumenta considerablemente cuando se agregan
+        cambios en los parámetros de medición y al guardar las mediciones en
+        memoria interna o externa, ya que este proceso consume bastantes
+        recursos del sistema.
+      </p>
+      <p>
+        Por cada medición, se agregaron 10 minutos de procesamiento, lo que
+        resulta en un aumento considerable del tiempo total de medición.
+      </p>
+
+      <p><strong>Tiempo de Observación en cada Banda</strong></p>
+      <table border="1">
+        <tr>
+          <th>Banda</th>
+          <th>T<sub>M</sub></th>
+          <th>Tiempo de Procesamiento</th>
+          <th>T<sub>Obs</sub></th>
+        </tr>
+        <tr>
+          <td>915MHz</td>
+          <td>11h:40min</td>
+          <td>5h:50min</td>
+          <td>17h:30min</td>
+        </tr>
+        <tr>
+          <td>2.4GHz</td>
+          <td>40h:00min</td>
+          <td>20h:00min</td>
+          <td>60h:00min</td>
+        </tr>
+      </table>
+      <h3>Selectividad</h3>
+      <p>
+        Uno de los aspectos a considerar al medir múltiples canales o bandas de
+        frecuencia enteras es separar las emisiones de los canales adyacentes,
+        si el ancho de banda de medición es demasiado grande y la emisión
+        intensa, los canales adyacentes pueden parecer también ocupados (UIT-R,
+        2016).
+      </p>
+      <p>
+        Por lo tanto, la resolución en frecuencia del equipo de medición debe
+        ser, como mínimo, tan pequeña como la separación del canal (más
+        estrecha) de la banda de frecuencias considerada (UIT-R, 2016), es
+        decir, el RBW (el ancho de banda de resolución) mientras más bajo
+        permite distinguir señales que estén muy cercanas en frecuencia,
+        aumentando la precisión en las mediciones, es por esto que en la
+        siguiente tabla se detallan los RBWs utilizados para cada una de las
+        bandas.
+      </p>
+
+      <p><strong>Ancho de banda de resolución para cada banda</strong></p>
+      <table>
+        <tr>
+          <th>Banda</th>
+          <th>RBW</th>
+        </tr>
+        <tr>
+          <td>915MHz</td>
+          <td>100KHz</td>
+        </tr>
+        <tr>
+          <td>2.4GHz</td>
+          <td>10KHz</td>
+        </tr>
+      </table>
+
+      <h3>Margen dinámico</h3>
+      <p>
+        Debe ser lo suficientemente sensible como para detectar las señales más
+        débiles y debe ser capaz de medir señales muy intensas procedentes de
+        transmisores cercanos (UIT-R, 2016), se podría decir que es el máximo y
+        mínimo nivel de potencia detectable, que con la escala se podría
+        aumentar este rango, en la siguiente tabla se presentan las métricas
+        utilizadas en las diferentes bandas.
+      </p>
+
+      <p><strong>Margen dinámico para cada banda</strong></p>
+      <table>
+        <tr>
+          <th>Banda</th>
+          <th>Margen dinámico</th>
+          <th>Escala</th>
+        </tr>
+        <tr>
+          <td>915MHz</td>
+          <td>-50 dBm a -100 dBm</td>
+          <td>5dB/Div</td>
+        </tr>
+        <tr>
+          <td>2.4GHz</td>
+          <td>-80 dBm a -140 dBm</td>
+          <td>6dB/Div</td>
+        </tr>
+      </table>
+
+      <h3>Umbral</h3>
+      <p>
+        Uno de los parámetros de mayor relevancia en un estudio de la ocupación
+        del espectro radioeléctrico viene a ser el umbral, el cual debe ser lo
+        suficientemente pequeño para poder detectar todas las señales que pueden
+        emplear los receptores comerciales, pero sin ser demasiado pequeño,
+        debido a que podría producir emisiones ficticias (UIT-R, 2016).
+      </p>
+      <p>
+        La recomendación (UIT-R, 2016) indica dos métodos para fijar el valor
+        del umbral.
+      </p>
+      <ul>
+        <p>
+          <strong>- Preestablecido: </strong> valor que permanece constante
+          durante toda la comprobación técnica
+        </p>
+        <p>
+          <strong>- Dinámico: </strong> si la finalidad de la medición es
+          detectar el mayor número posible de emisiones, con independencia de su
+          nivel, se puede utilizar el umbral adaptable al nivel real de ruido.
+        </p>
+      </ul>
+      <p>
+        Para el estudio realizado se definió el uso del umbral preestablecido
+        que muestra exactamente la situación en el lugar donde se efectúa la
+        comprobación técnica.
+      </p>
+      <p>
+        El valor umbral se debe establecer en base al siguiente criterio (UIT-R,
+        2016):
+      </p>
+      <ul>
+        <p>
+          - La sensibilidad del receptor más la relación S/N mínima para el
+          servicio de radiocomunicaciones especifico.
+        </p>
+        <p>
+          - Si el ancho de banda de medición (RBW) es considerablemente inferior
+          al ocupado por la emisión observada, el umbral debe reducirse por
+          10log (OBW/RBW).
+        </p>
+      </ul>
+      <p>
+        Por tanto, la formula a usarse para definir el umbral preestablecido
+        vendría a quedar de la siguiente manera.
+      </p>
+      <p class="formula">Umbral = S<sub>R</sub> + S/N + 10 log(OBW/RBW)</p>
+      <ul>
+        <p><strong>S<sub>R</sub>:</strong> sensibilidad del receptor</p>
+        <p><strong>S/N:</strong> relación señal - ruido</p>
+        <p><strong>OBW:</strong> ancho de banda de observación</p>
+        <p><strong>RBW:</strong> ancho de banda de resolución</p>
+      </ul>
+      <p><strong>Para 915MHz</strong></p>
+      <p class="formula">
+        Umbral = -135dBm + 15dB + 10 log(1MHz/10KHz) = <strong>-100 dBm</strong>
+      </p>
+
+      <p><strong>Para 2.4GHz</strong></p>
+      <p class="formula">
+        Umbral = -115dBm + 15dB + 10 log(20MHz/100KHz) =
+        <strong>-76.99 dB</strong>
+      </p>
+      <h2>Procesamiento y Análisis de Datos</h2>
+      <p>
+        Establecidos los parámetros de medición, se puede configurar el
+        analizador de espectro ANRITSU MT8212B, para obtener las muestras en las
+        distintas zonas de medición dentro del área de estudio, que van a servir
+        para estimar el nivel de ocupación radioeléctrica que existe en la
+        regeneración urbana. A continuación, en la tabla 19 se detallan estos
+        parámetros.
+      </p>
+
+      <p>
+        <strong>Parámetros de configuración del analizador de espectro</strong>
+      </p>
+      <table>
+        <tr>
+          <th>Parámetros</th>
+          <th>Valores</th>
+        </tr>
+        <tr>
+          <td>Rango de frecuencias</td>
+          <td>902Mhz – 928Mhz, 2,401Mhz – 2,473Mhz</td>
+        </tr>
+        <tr>
+          <td>Frecuencia de Span</td>
+          <td>26Mhz, 72Mhz</td>
+        </tr>
+        <tr>
+          <td>Nivel de referencia</td>
+          <td>-80 dBm a -140 dBm, -50 dBm a -100 dBm</td>
+        </tr>
+        <tr>
+          <td>Escala</td>
+          <td>6 dB/Div, 5 dB/Div</td>
+        </tr>
+        <tr>
+          <td>RBW</td>
+          <td>10Khz, 100Khz</td>
+        </tr>
+        <tr>
+          <td>VBW</td>
+          <td>10Khz, 3Khz</td>
+        </tr>
+        <tr>
+          <td>Preamplificador</td>
+          <td>Dinámico</td>
+        </tr>
+        <tr>
+          <td>Tipo de medida radioeléctrica</td>
+          <td>Espectrograma</td>
+        </tr>
+      </table>
+      <h3>Procesamiento de los datos</h3>
+      <p>
+        En la medición previa realizada en la banda 2.4 GHz, que comprende 24
+        zonas de medición, y en la banda 915 MHz, con 7 zonas, se obtuvieron las
+        400 muestras planteadas en la sección 4.3.2.3, el almacenar estos datos
+        de los niveles de potencia dispersa de los distintos canales es una
+        ardua tarea considerando que son 400 muestras y que cada banda se divide
+        en varios canales, es decir, cada canal debe tener alrededor de 400
+        muestras para ser considerado un dato fiable, es por ello que se los
+        almaceno en hojas de cálculo de Excel.
+      </p>
+      <p>
+        En la selección de estado se compara la potencia promedio con el umbral,
+        si es mayor o igual, entonces el State_(i,j) el valor de 1 (ocupado),
+        caso contrario 0 (desocupado), como se lo puede ver en la fórmula 9.
+      </p>
+      <img
+        src="imagenes/formi.png"
+        alt="Ubicación Punto 1"
+        style="width: 200px; display: block; margin: 0"
+      />
+
+      <p>
+        Considerando las hojas de cálculo de Excel como base de datos, y
+        considerando los umbrales obtenidos en el punto 5.4.2.12 se puede
+        realizar la exclusión de los datos que superan este umbral, quedando
+        únicamente las potencias que están por encima del mismo y que son
+        consideradas ocupación, para esto se diseñó un código en Python que se
+        ejecuta en Google colab y utiliza diferentes bibliotecas propias para
+        trabajar con grandes cantidades de datos como Pandas y Openyxl que
+        permite trabajar con archivos Excel y agregar relleno a las celdas.
+      </p>
+      <p>
+        Como resultado se obtiene una nueva hoja de cálculo con las celdas
+        remarcadas en los niveles altos de potencia que superan el umbral, y
+        cada canal consta con la cantidad total de muestras que superan este
+        umbral, facilitando el siguiente paso que es obtener los promedios de
+        ocupación.
+      </p>
+      <h3>Análisis de datos</h3>
+      <p>
+        En la siguiente sección se especifica la forma principal que la (UIT-R,
+        2016) establece para calcular el porcentaje de ocupación, de un solo
+        canal o en toda la banda de frecuencia.
+      </p>
+
+      <p>
+        <strong>Ocupación del canal de frecuencia</strong>
+      </p>
+      <p>
+        Para determinar la ocupación por canal la recomendación UIT-R propone el
+        uso de la siguiente fórmula con la que se podría hallar de forma rápida
+        el nivel de ocupación
+      </p>
+      <p class="formula">FCO = N<sub>O</sub> / N</p>
+      <p>Donde:</p>
+      <ul>
+        <p>
+          <strong>N<sub>O</sub>: </strong> Número de muestras medidas en el
+          canal considerado cuyo nivel es superior al umbral.
+        </p>
+        <p>
+          <strong>N:</strong> Número de muestras tomadas en el canal durante el
+          periodo de integración.
+        </p>
+      </ul>
+
+      <p>
+        <strong>Ocupación de la banda de frecuencia</strong>
+      </p>
+      <p>
+        Para obtener la ocupación por banda la UIT-R plantea una fórmula similar
+        a la de la ocupación por canal, pero en este caso aplicado a todas las
+        muestras obtenidas que superen el umbral, la fórmula vendría
+        representada de la siguiente manera.
+      </p>
+      <p class="formula">FBO = N<sub>O</sub> / N</p>
+      <p>Donde:</p>
+      <ul>
+        <p>
+          <strong>N<sub>O</sub>: </strong> Número de muestras cuyo nivel es
+          superior al umbral
+        </p>
+        <p>
+          <strong>N:</strong> Número total de muestras medidas durante el
+          periodo de integración.
+        </p>
+      </ul>
+    </body>
+  </div>
+</html>

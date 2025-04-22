@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Ocupación</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden; /* Evita que haya scroll innecesario */
+      }
+      .leaflet-control-zoom {
+        position: absolute;
+        top: 45px;
+        left: 3px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .leaflet-control-zoom-in,
+      .leaflet-control-zoom-out {
+        width: 30px;
+        height: 30px;
+        background: white;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+
+      #map {
+        height: 100vh; /* Ocupa toda la pantalla */
+        width: 100vw; /* Ocupa todo el ancho */
+      }
+      #controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: white;
+        padding: 12px;
+        border-radius: 5px;
+        z-index: 1000;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      }
+      #coords {
+        position: absolute;
+        bottom: 17px; /* Lo baja un poco */
+        right: 15px; /* Lo mueve más a la izquierda */
+        background: white;
+        padding: 5px;
+        border-radius: 5px;
+        z-index: 1000;
+        font-size: 14px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      #imageContainer {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        height: auto;
+        background: rgba(255, 255, 255, 0.9);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
+
+      #imageTitle {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      #imageContainer img {
+        max-width: 90%;
+        max-height: 50vh;
+        border-radius: 10px;
+      }
+      #closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      #legend {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background: #f8f7d2;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+        box-shadow: 0 0 10px rgba(96, 214, 18, 0.2);
+        font-size: 20px;
+      }
+
+      .legend-title {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 2px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2px;
+      }
+
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+        margin-right: 5px;
+      }
+      #infoPopup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 90vw;
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        z-index: 4000;
+        text-align: center;
+        font-family: "Times New Roman", Times, serif, sans-serif;
+        font-size: 20px;
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+        cursor: grab;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .content-scroll {
+        max-height: 50vh; /* Altura máxima para el contenido */
+        overflow-y: auto; /* Habilita el scroll */
+        padding: 10px;
+        text-align: left;
+
+        /* Estilos para la barra de desplazamiento */
+        scrollbar-width: thin; /* Hace la barra más delgada (Firefox) */
+        scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.3); /* Color de la barra y el fondo */
+      }
+
+      /* Personalización para navegadores WebKit (Chrome, Edge, Safari) */
+      .content-scroll::-webkit-scrollbar {
+        width: 8px; /* Grosor de la barra */
+      }
+
+      .content-scroll::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.3); /* Color del fondo */
+        border-radius: 5px;
+      }
+
+      .content-scroll::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5); /* Color de la barra */
+        border-radius: 5px;
+      }
+
+      .content-scroll::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.7); /* Color al pasar el mouse */
+      }
+
+      /* Botón de cierre */
+      #closePopup {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: red;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      /* Botón flotante para abrir el cuadro */
+      #openPopup {
+        position: fixed;
+        left: 10px; /* Lo mueve a la izquierda */
+        top: 81%; /* Lo centra verticalmente */
+        transform: translateY(-50%); /* Ajusta el centro exacto */
+        background: #007bff;
+        color: white;
+        padding: 12px 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1500;
+        display: none; /* Oculto al inicio */
+      }
+
+      /* Pestañas */
+      .tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .tab {
+        padding: 8px 12px;
+        cursor: pointer;
+        background: #333;
+        border-radius: 5px;
+        margin: 0 5px;
+        color: white;
+        font-size: 14px;
+      }
+
+      .tab.active {
+        background: #007bff;
+      }
+
+      /* Contenido de pestañas */
+      .tab-content {
+        display: none;
+        font-size: 18px;
+        text-align: justify;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+      .btn-back {
+        position: absolute;
+        top: 8px;
+        left: 4px;
+        background: #2091f9;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        transition: background 0.3s ease;
+      }
+      .btn-back {
+        position: absolute;
+        z-index: 9999 !important;
+      }
+
+      .btn-back:hover {
+        background: #1676d1;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="../index.html" class="btn-back">← Volver</a>
+    <div id="controls">
+      <select id="bandaSelector" onchange="cambiarBanda()">
+        <option value="915MHz">Visualizar Banda 915 MHz</option>
+        <option value="2.4GHz">Visualizar Banda 2.4 GHz</option>
+      </select>
+    </div>
+    <div id="map"></div>
+    <div id="coords">Lat: -, Lng: -</div>
+    <div id="imageContainer">
+      <button id="closeBtn" onclick="cerrarImagen()">X</button>
+      <div id="imageTitle"></div>
+      <img id="infoImage" src="" alt="Gráfica de ocupación" />
+    </div>
+    <div id="legend">
+      <div class="legend-title">Escala de Ocupación (%)</div>
+      <div id="legend-items"></div>
+    </div>
+    <!-- Cuadro de Información SIEMPRE visible al inicio -->
+    <div id="infoPopup">
+      <button id="closePopup" onclick="cerrarPopup()">X</button>
+      <h2>Casco Urbano Central de Loja</h2>
+
+      <!-- Pestañas de Navegación -->
+      <div class="tabs">
+        <div class="tab active" onclick="cambiarPestaña('Descripción')">
+          Descripción
+        </div>
+        <div class="tab" onclick="cambiarPestaña('Límites')">Límites</div>
+        <div class="tab" onclick="cambiarPestaña('Movilidad')">Movilidad</div>
+        <div class="tab" onclick="cambiarPestaña('Infraestructura')">
+          Infraestructura
+        </div>
+      </div>
+
+      <!-- Contenido de cada pestaña -->
+      <div class="content-scroll">
+        <div id="Descripción" class="tab-content active">
+          <p>
+            El Proyecto de Regeneración Urbana del Casco Céntrico de la Ciudad
+            de Loja, en relación con el componente urbano arquitectónico, se
+            corresponde dentro del contexto urbanístico como
+            <strong>REVITALIZACIÓN URBANA</strong>, el proyecto ha tomado la
+            iniciativa de repotenciar el área céntrica de nuestra ciudad,
+            mediante el diseño arquitectónico, para de ahí, seguir mejorando
+            toda la imagen urbana de la ciudad con diferentes proyectos.
+          </p>
+
+          <p>
+            El Proyecto cuenta con una intervención de 170 hectáreas del casco
+            antiguo de Loja, en la que confluye casi la totalidad de las
+            actividades administrativas, comerciales, financieras, académicas y
+            culturales de toda la ciudad. En general se divide en dos áreas cada
+            una de ellas tendrá un tratamiento especial, que al sumarse formara
+            un conjunto homogéneo:
+          </p>
+
+          <p>
+            <strong>EL ÁREA DE PRIMER ORDEN O CENTRO HISTÓRICO</strong>, dada su
+            connotación simbólica tiene un tratamiento especial, al constituirse
+            en el elemento integrador y coherente de la identidad social e
+            histórica de nuestra ciudad se enmarca en el concepto de espacio
+            público de representación vinculado con la memoria colectiva.
+          </p>
+
+          <h3>NIVEL DE INTERVENCIÓN:</h3>
+
+          <ul>
+            <li>
+              Se eliminarán barreras arquitectónicas que impiden la autonomía
+              personal y el libre desplazamiento.
+            </li>
+            <li>
+              Se priorizan las necesidades de movilidad de las personas con
+              discapacidades físicas y la de peatones por sobre el tránsito
+              vehicular.
+            </li>
+          </ul>
+
+          <p>Se ha previsto:</p>
+
+          <ul>
+            <li>Ensanchamiento de veredas.</li>
+            <li>Peatonización de calle 10 de Agosto.</li>
+            <li>Señales de tránsito y semaforización.</li>
+            <li>Eliminación de Estacionamientos.</li>
+          </ul>
+          <p>
+            <strong> El ÁREA DE SEGUNDO ORDEN</strong> cuyo desarrollo se inicia
+            a partir de mediados del siglo XX, es un área que presenta alguna
+            concepción moderna de urbanismo, pero ha perdido identidad, el
+            vehículo asumió mayor protagonismo frente al desplazamiento
+            ciudadano. En esta área igualmente se eliminarán barreras
+            arquitectónicas que impiden la autonomía personal y el libre
+            desplazamiento.
+          </p>
+
+          <p>Se ha previsto:</p>
+
+          <ul>
+            <li>Orejas de Estacionamiento.</li>
+            <li>Señales de tránsito y semaforización.</li>
+            <li>Identificación y control de estacionamientos.</li>
+          </ul>
+          <img
+            src="re_urbana/areas.png"
+            alt="Descripción de la imagen"
+            style="
+              display: block;
+              margin: 20px auto;
+              max-width: 100%;
+              height: auto;
+            "
+          />
+        </div>
+
+        <div id="Límites" class="tab-content">
+          <ul>
+            <li>
+              <strong>Límite norte: </strong> inicia en la intersección de la
+              Av. Universitaria y Av. Emiliano Ortega (Puerta de la ciudad).
+            </li>
+            <li>
+              <strong>Límite sur: </strong> desde el cruce de la Av. Emiliano
+              Ortega (Centro de Rehabilitación Social), recorre la calle
+              Catacocha hasta el cruce, con la calle Olmedo, ahí tomara el
+              sentido de la calle Olmedo hacia el Sur, hasta empatar con la
+              calle Maximiliano Rodríguez, recorre el sentido sur de la calle
+              Maximiliano Rodríguez, hasta su unión con la Av. Eduardo Kingman,
+              desde ahí recorre el trayecto Av. Eduardo Kingman, hasta la
+              intersección con el redondel de la Av. Gobernación de Mainas,
+              recorre el trayecto de la avenida Av. Gobernación de Mainas hasta
+              el cruce con la calle 18 de Noviembre adonde finalizara el límite
+              Sur.
+            </li>
+            <li>
+              <strong>Límite oeste: </strong> inicia en el cruce de la Av.
+              Gobernación de Mainas con la calle 18 de Noviembre, siguiendo la
+              dirección sur se introduce en el desvío que conduce a la Unidad de
+              tránsito y transporte terrestre del Municipio de Loja, hasta
+              conectar con la Av. Universitaria, sigue el trayecto de la Av.
+              Universitaria hasta llegar a la puerta de la ciudad.
+            </li>
+            <li>
+              <strong>Límite este: </strong> inicia desde la Puerta de la
+              ciudad, recorre la Av. Emiliano Ortega, hasta el cruce con la
+              calle Catacocha (centro de rehabilitación social).
+            </li>
+          </ul>
+        </div>
+
+        <div id="Movilidad" class="tab-content">
+          <li>
+            Peatonización de calle 10 de Agosto.
+            <img
+              src="re_urbana/calle_10.jpg"
+              alt="Descripción de la imagen"
+              style="
+                display: block;
+                margin: 20px auto;
+                max-width: 50%;
+                height: auto;
+              "
+            />
+          </li>
+          <li>Desplazamiento maximo de 300 metros a las paradas de buses.</li>
+          <li>
+            El transporte privado también circulara con mayor facilidad, con una
+            velocidad moderada de entre 30- 40km/h, en el área de primer orden,
+            se evitara que ingresen masivamente los vehículos a esta área.
+          </li>
+          <li>
+            Implementación de una ciclo vía como parte del conjunto de acciones
+            que mejorar la movilidad urbana de la ciudad.
+            <img
+              src="re_urbana/ciclo_via.png"
+              alt="Descripción de la imagen"
+              style="
+                display: block;
+                margin: 20px auto;
+                max-width: 80%;
+                height: auto;
+              "
+            />
+            <img
+              src="re_urbana/ruta_ciclovia.png"
+              alt="Descripción de la imagen"
+              style="
+                display: block;
+                margin: 20px auto;
+                max-width: 80%;
+                height: auto;
+              "
+            />
+          </li>
+          <li>Aparcamiento Vehicular.</li>
+          <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- En el área de Primer Orden, se
+            eliminan los espacios de aparcamiento y se ubicaran edificios
+            exclusivos para este fin, alrededor del centro del área de
+            intervención.
+          </p>
+          <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- En el área de Segundo Orden se
+            mantiene, ordenan y sistematizan los espacios de estacionamiento.
+          </p>
+        </div>
+        <div id="Infraestructura" class="tab-content">
+          <p>
+            Con el proyecto Regenerar se ha realizado la instalación de nuevos
+            sistemas de agua potable, redes de alcantarillado pluvial y
+            sanitario, pavimentación de vías, soterramiento de cables de energía
+            eléctrica y telecomunicaciones; y la regeneración de bordillos,
+            aceras y mobiliario urbano.
+          </p>
+          <p>
+            <strong>INTERVENCIÓN EN EL ÁREA DE PRIMER ORDEN</strong>
+          </p>
+          <p>
+            Ampliación de aceras a un promedio de 2.5m, calzada de pavimento de
+            3.5m promedio, reciclaje de carpeta asfáltica, materiales de veredas
+            y mobiliario, Incorporación de rampas y esquinas deprimidas para
+            mejorar la accesibilidad, Implementación de ciclo vía. Arborización.
+            <li>
+              <strong>Bancos</strong> con y sin respaldo de estructura metálica
+              y asientos en madera de teka, considerando su alta duración a la
+              intemperie.
+            </li>
+            <li>
+              <strong>Esquinas deprimidas</strong> se implementara esta
+              tipología de rampa en vista de la reducción de las vías de
+              circulación y ampliación de las aceras, mejorando la accesibilidad
+              en un 100%.
+            </li>
+            <li>
+              <strong>Bolardos de tipo cilíndrico</strong> Elementó de
+              equipamiento del espacio público que protege al peatón al definir,
+              configurar y ordenar las áreas de circulación en la ciudad.
+            </li>
+            <li>
+              <strong>Papeleras</strong> urbanas serán de acero inoxidable por
+              su resistencia al uso e intemperie en los espacios públicos, se
+              colocara dos papeleras contiguas, con los adhesivos
+              identificatorios s, el adhesivo verde para basura biodegradable y
+              el adhesivo negro para basura no biodegradable.
+            </li>
+            <li>
+              <strong>La iluminación</strong> se caracterizara por mantener una
+              unidad, sin importar la marca de luminarias, que sea flexible,
+              sostenible y energéticamente eficiente lo último en tecnología
+              LED, y la dimerización inteligente o automatizada.
+            </li>
+          </p>
+          <p>
+            <strong>INTERVENCIÓN EN EL ÁREA DE SEGUNDO ORDEN</strong>
+          </p>
+          <li>
+            <strong>Orejas de estacionamiento:</strong> para la delimitación de
+            las plazas de parqueo, cuyo objetivo de carácter urbano es acortar
+            el desplazamiento del peatón y provocar mayor seguridad en los
+            cruces de vías. Reducir la velocidad y mantener un buen control del
+            Sistema Municipal de Estacionamiento Rotativo Tarifado de la ciudad
+            de Loja, SIMERT.
+          </li>
+          <li>
+            <strong>Pisos:</strong> El acabado de la segunda área de
+            intervención se hará en gres color begie (base) y este color no será
+            uniforme tendrá variaciones y hormigón impreso gris, con un diseño
+            personalizado, este material evitará que se resbalen los transeúntes
+            existe una perfecta comunión para hacer notar en el concepto
+            pixelado porque los materiales son de la misma familia.
+          </li>
+          <li>
+            <strong>Presas de árbol:</strong> Es un elemento de equipamiento del
+            espacio público que vela por el correcto y normal crecimiento de un
+            árbol joven y evita su maltrato.
+          </li>
+          <li>
+            <strong>La iluminación</strong> en el caso del parterre central
+            calle juan de Salinas doble Brazo, en el caso de la 24 de Mayo se ha
+            decidido por implementar luminaria de doble brazo a diferente altura
+            un brazo ilumina el área vehicular y el otro el área peatonal. En el
+            resto del área de segundo orden se implantará una luminaria de un
+            solo brazo.
+          </li>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón flotante para abrir el cuadro, inicialmente oculto -->
+    <button id="openPopup" onclick="abrirPopup()">ℹ️</button>
+    <script>
+      function cerrarPopup() {
+        let popup = document.getElementById("infoPopup");
+        popup.style.opacity = "0";
+        setTimeout(() => (popup.style.display = "none"), 500);
+
+        // Muestra el botón ℹ️ cuando se cierra el popup
+        document.getElementById("openPopup").style.display = "block";
+      }
+
+      function abrirPopup() {
+        let popup = document.getElementById("infoPopup");
+        popup.style.display = "block";
+        setTimeout(() => (popup.style.opacity = "1"), 10);
+
+        // Oculta el botón ℹ️ cuando se abre el popup
+        document.getElementById("openPopup").style.display = "none";
+      }
+
+      function cambiarPestaña(tabId) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((tab) => tab.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((content) => content.classList.remove("active"));
+
+        document
+          .querySelector(`[onclick="cambiarPestaña('${tabId}')"]`)
+          .classList.add("active");
+        document.getElementById(tabId).classList.add("active");
+      }
+
+      // Funcionalidad para arrastrar el cuadro
+      function makeDraggable(el) {
+        let offsetX,
+          offsetY,
+          isDragging = false;
+
+        el.addEventListener("mousedown", (e) => {
+          isDragging = true;
+          offsetX = e.clientX - el.getBoundingClientRect().left;
+          offsetY = e.clientY - el.getBoundingClientRect().top;
+          el.style.cursor = "grabbing";
+        });
+
+        document.addEventListener("mousemove", (e) => {
+          if (!isDragging) return;
+          let x = e.clientX - offsetX;
+          let y = e.clientY - offsetY;
+          el.style.left = `${x}px`;
+          el.style.top = `${y}px`;
+          el.style.transform = "none";
+        });
+
+        document.addEventListener("mouseup", () => {
+          isDragging = false;
+          el.style.cursor = "grab";
+        });
+
+        // Para dispositivos táctiles
+        el.addEventListener("touchstart", (e) => {
+          isDragging = true;
+          let touch = e.touches[0];
+          offsetX = touch.clientX - el.getBoundingClientRect().left;
+          offsetY = touch.clientY - el.getBoundingClientRect().top;
+        });
+
+        document.addEventListener("touchmove", (e) => {
+          if (!isDragging) return;
+          let touch = e.touches[0];
+          let x = touch.clientX - offsetX;
+          let y = touch.clientY - offsetY;
+          el.style.left = `${x}px`;
+          el.style.top = `${y}px`;
+          el.style.transform = "none";
+        });
+
+        document.addEventListener("touchend", () => {
+          isDragging = false;
+        });
+      }
+
+      makeDraggable(document.getElementById("infoPopup"));
+    </script>
+
+    <script>
+      const map = L.map("map").setView([-4.00177, -79.20533], 15);
+
+      const poligonoRegeneracion = [
+        [-3.98973, -79.20417],
+        [-3.98997, -79.20449],
+        [-3.99009, -79.20466],
+        [-3.99039, -79.20484],
+        [-3.99086, -79.20509],
+        [-3.99132, -79.20531],
+        [-3.99178, -79.20551],
+        [-3.99211, -79.20557],
+        [-3.99264, -79.20554],
+        [-3.99344, -79.20544],
+        [-3.99544, -79.20518],
+        [-3.99735, -79.20498],
+        [-3.99945, -79.20475],
+        [-4.00147, -79.20448],
+        [-4.00376, -79.20419],
+        [-4.00599, -79.20392],
+        [-4.00955, -79.20348],
+        [-4.00951, -79.20307],
+        [-4.01307, -79.20275],
+        [-4.013, -79.20205],
+        [-4.01303, -79.20182],
+        [-4.01369, -79.20117],
+        [-4.01361, -79.201],
+        [-4.01068, -79.20115],
+        [-4.009, -79.20144],
+        [-4.00584, -79.20131],
+        [-4.00497, -79.20073],
+        [-4.00553, -79.20061],
+        [-4.00576, -79.19989],
+        [-4.00485, -79.19964],
+        [-4.00423, -79.19966],
+        [-4.00413, -79.19858],
+        [-4.00347, -79.19865],
+        [-4.00337, -79.19546],
+        [-4.00346, -79.19512],
+        [-4.0041, -79.19411],
+        [-4.00415, -79.19383],
+        [-4.00377, -79.19363],
+        [-4.00344, -79.1942],
+        [-4.00309, -79.1944],
+        [-4.0023, -79.19529],
+        [-4.00107, -79.19567],
+        [-3.99886, -79.19668],
+        [-3.99744, -79.19742],
+        [-3.99698, -79.19774],
+        [-3.99656, -79.19788],
+        [-3.9957, -79.19811],
+        [-3.99543, -79.19835],
+        [-3.99439, -79.19965],
+        [-3.99306, -79.20098],
+        [-3.99254, -79.20127],
+        [-3.99161, -79.20153],
+        [-3.99117, -79.20191],
+        [-3.9899, -79.2034],
+        [-3.98944, -79.20365],
+      ];
+      const callejero = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          attribution: "&copy; OpenStreetMap contributors",
+        }
+      ).addTo(map);
+
+      const gris = L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+        }
+      );
+
+      const satelite = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
+        }
+      );
+
+      const hibrido = L.layerGroup([
+        satelite,
+        L.tileLayer(
+          "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+          {
+            attribution: '&copy; <a href="https://www.esri.com/">Esri</a>',
+          }
+        ),
+      ]);
+
+      const baseMaps = {
+        Callejero: callejero,
+        "Gris (Carto Light)": gris,
+        "Satélite (Esri)": satelite,
+        Híbrido: hibrido,
+      };
+
+      L.control.layers(baseMaps, null, { position: "bottomleft" }).addTo(map);
+      L.polygon(poligonoRegeneracion, {
+        color: "red", // Borde rojo
+        weight: 4, // Grosor de línea
+        fill: false, // Sin relleno
+      })
+        .addTo(map)
+        .bindPopup("Zona de Regeneración Urbana");
+
+      function getColor(ocupacion) {
+        if (ocupacion >= 93) return "#FF00FF";
+        if (ocupacion >= 86) return "#FF66FF";
+        if (ocupacion >= 79) return "#FF0000";
+        if (ocupacion >= 72) return "#FF4500";
+        if (ocupacion >= 65) return "#FF6600";
+        if (ocupacion >= 58) return "#FFA500";
+        if (ocupacion >= 51) return "#FFFF00";
+        if (ocupacion >= 44) return "#BFFF00";
+        if (ocupacion >= 37) return "#00FF00";
+        if (ocupacion >= 30) return "#00FF80";
+        if (ocupacion >= 23) return "#00FFFF";
+        if (ocupacion >= 16) return "#66FFFF";
+        if (ocupacion >= 9) return "#00BFFF";
+        if (ocupacion >= 2) return "#0000FF";
+        return "#404040";
+      }
+
+      const zonas915MHz = [
+        {
+          lat: -3.992475,
+          lng: -79.203494,
+          ocupacion: 1.35,
+          radio: 300,
+          imagen: "./imagenes_915mhz/1.png",
+          titulo: "Punto 1",
+        },
+        {
+          lat: -3.997219,
+          lng: -79.203122,
+          ocupacion: 1.99,
+          radio: 310,
+          imagen: "./imagenes_915mhz/2.png",
+          titulo: "Punto 2",
+        },
+        {
+          lat: -4.002503,
+          lng: -79.202706,
+          ocupacion: 0.44,
+          radio: 300,
+          imagen: "./imagenes_915mhz/3.png",
+          titulo: "Punto 3",
+        },
+        {
+          lat: -4.007483,
+          lng: -79.202428,
+          ocupacion: 61.87,
+          radio: 305,
+          imagen: "./imagenes_915mhz/4.png",
+          titulo: "Punto 4",
+        },
+        {
+          lat: -4.012811,
+          lng: -79.201742,
+          ocupacion: 52.27,
+          radio: 310,
+          imagen: "./imagenes_915mhz/5.png",
+          titulo: "Punto 5",
+        },
+        {
+          lat: -3.996078,
+          lng: -79.199175,
+          ocupacion: 0.72,
+          radio: 320,
+          imagen: "./imagenes_915mhz/6.png",
+          titulo: "Punto 6",
+        },
+        {
+          lat: -4.0012,
+          lng: -79.198778,
+          ocupacion: 11.0,
+          radio: 330,
+          imagen: "./imagenes_915mhz/7.png",
+          titulo: "Punto 7",
+        },
+      ];
+
+      const zonas24GHz = [
+        {
+          lat: -3.990911,
+          lng: -79.204378,
+          ocupacion: 54.4,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/1.png",
+          titulo: "Punto 1",
+        },
+        {
+          lat: -3.991564,
+          lng: -79.202944,
+          ocupacion: 19.28,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/2.png",
+          titulo: "Punto 2",
+        },
+        {
+          lat: -3.993353,
+          lng: -79.204364,
+          ocupacion: 50.94,
+          radio: 142,
+          imagen: "./Imagenes_2.4ghz/3.png",
+          titulo: "Punto 3",
+        },
+        {
+          lat: -3.993139,
+          lng: -79.202364,
+          ocupacion: 25.53,
+          radio: 142,
+          imagen: "./Imagenes_2.4ghz/4.png",
+          titulo: "Punto 4",
+        },
+        {
+          lat: -3.995394,
+          lng: -79.204206,
+          ocupacion: 42.36,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/5.png",
+          titulo: "Punto 5",
+        },
+        {
+          lat: -3.995222,
+          lng: -79.202194,
+          ocupacion: 42.75,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/6.png",
+          titulo: "Punto 6",
+        },
+        {
+          lat: -3.995094,
+          lng: -79.200319,
+          ocupacion: 45.53,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/7.png",
+          titulo: "Punto 7",
+        },
+        {
+          lat: -3.997311,
+          lng: -79.204053,
+          ocupacion: 50.5,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/8.png",
+          titulo: "Punto 8",
+        },
+        {
+          lat: -3.997103,
+          lng: -79.202036,
+          ocupacion: 24.02,
+          radio: 142,
+          imagen: "./Imagenes_2.4ghz/9.png",
+          titulo: "Punto 9",
+        },
+        {
+          lat: -3.997,
+          lng: -79.200172,
+          ocupacion: 51.65,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/10.png",
+          titulo: "Punto 10",
+        },
+        {
+          lat: -3.996856,
+          lng: -79.198147,
+          ocupacion: 27.35,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/11.png",
+          titulo: "Punto 11",
+        },
+        {
+          lat: -3.9994,
+          lng: -79.203875,
+          ocupacion: 52.17,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/12.png",
+          titulo: "Punto 12",
+        },
+        {
+          lat: -3.999233,
+          lng: -79.201914,
+          ocupacion: 50.48,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/13.png",
+          titulo: "Punto 13",
+        },
+        {
+          lat: -3.999122,
+          lng: -79.200008,
+          ocupacion: 63.0,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/14.png",
+          titulo: "Punto 14",
+        },
+        {
+          lat: -3.999253,
+          lng: -79.197917,
+          ocupacion: 22.36,
+          radio: 170,
+          imagen: "./Imagenes_2.4ghz/15.png",
+          titulo: "Punto 15",
+        },
+        {
+          lat: -4.001458,
+          lng: -79.203714,
+          ocupacion: 42.59,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/16.png",
+          titulo: "Punto 16",
+        },
+        {
+          lat: -4.001364,
+          lng: -79.201756,
+          ocupacion: 67.04,
+          radio: 142,
+          imagen: "./Imagenes_2.4ghz/17.png",
+          titulo: "Punto 17",
+        },
+        {
+          lat: -4.001253,
+          lng: -79.199858,
+          ocupacion: 26.02,
+          radio: 140,
+          imagen: "./Imagenes_2.4ghz/18.png",
+          titulo: "Punto 18",
+        },
+        {
+          lat: -4.002158,
+          lng: -79.197058,
+          ocupacion: 31.67,
+          radio: 180,
+          imagen: "./Imagenes_2.4ghz/19.png",
+          titulo: "Punto 19",
+        },
+        {
+          lat: -4.003114,
+          lng: -79.199731,
+          ocupacion: 34.92,
+          radio: 160,
+          imagen: "./Imagenes_2.4ghz/20.png",
+          titulo: "Punto 20",
+        },
+        {
+          lat: -4.003739,
+          lng: -79.202633,
+          ocupacion: 31.44,
+          radio: 160,
+          imagen: "./Imagenes_2.4ghz/21.png",
+          titulo: "Punto 21",
+        },
+        {
+          lat: -4.006347,
+          lng: -79.202522,
+          ocupacion: 34.46,
+          radio: 160,
+          imagen: "./Imagenes_2.4ghz/22.png",
+          titulo: "Punto 22",
+        },
+        {
+          lat: -4.008942,
+          lng: -79.2023,
+          ocupacion: 38.96,
+          radio: 160,
+          imagen: "./Imagenes_2.4ghz/23.png",
+          titulo: "Punto 23",
+        },
+        {
+          lat: -4.011503,
+          lng: -79.201831,
+          ocupacion: 4.77,
+          radio: 160,
+          imagen: "./Imagenes_2.4ghz/24.png",
+          titulo: "Punto 24",
+        },
+      ];
+
+      let capasOcupacion = L.layerGroup().addTo(map);
+
+      function mostrarOcupacion(zonas) {
+        capasOcupacion.clearLayers();
+        zonas.forEach((zona) => {
+          L.circle([zona.lat, zona.lng], {
+            color: "none",
+            fillColor: getColor(zona.ocupacion),
+            fillOpacity: 0.5,
+            radius: zona.radio,
+          })
+            .addTo(capasOcupacion)
+            .bindPopup(`Ocupación: ${zona.ocupacion}%`)
+            .on("click", () => mostrarImagen(zona.imagen, zona.titulo));
+        });
+      }
+
+      function cambiarBanda() {
+        const banda = document.getElementById("bandaSelector").value;
+        mostrarOcupacion(banda === "915MHz" ? zonas915MHz : zonas24GHz);
+      }
+
+      function mostrarImagen(url, titulo) {
+        document.getElementById("infoImage").src = url;
+        document.getElementById("imageTitle").textContent = titulo;
+        document.getElementById("imageContainer").style.display = "flex";
+      }
+
+      function cerrarImagen() {
+        document.getElementById("imageContainer").style.display = "none";
+      }
+
+      map.on("mousemove", function (e) {
+        document.getElementById(
+          "coords"
+        ).textContent = `Lat: ${e.latlng.lat.toFixed(
+          5
+        )}, Lng: ${e.latlng.lng.toFixed(5)}`;
+      });
+
+      cambiarBanda();
+    </script>
+  </body>
+
+  <script src="../js/leyenda.js"></script>
+</html>

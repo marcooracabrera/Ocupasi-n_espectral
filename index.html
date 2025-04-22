@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estudio de la Ocupación Espectral</title>
+    <link rel="shortcut icon" href="./images/Logo.png " type="image/x-icon" />
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/estilos.css" />
+
+    <meta name="theme-color" content="#2091F9" />
+    <meta name="title" content="Análisis de la Ocupación Espectral" />
+    <meta
+      name="description"
+      content="Descubre cómo funciona la ocupación espectral y su impacto en las telecomunicaciones."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Análisis de la Ocupación Espectral" />
+    <meta
+      property="og:description"
+      content="Explora la distribución del espectro y su uso en diferentes tecnologías."
+    />
+  </head>
+
+  <body>
+    <header class="hero">
+      <nav
+        class="nav container"
+        style="
+          position: relative;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+        "
+      >
+        <div class="nav__logo" style="display: flex; align-items: center">
+          <img
+            src="./images/logoo.png"
+            class="nav__logo-left"
+            style="
+              position: absolute;
+              top: 10px;
+              left: 10px;
+              width: 250px;
+              height: auto;
+            "
+          />
+        </div>
+        <img
+          src="./images/f.png"
+          class="nav__logo-right"
+          style="
+            position: absolute;
+            top: 3px;
+            right: 10px;
+            width: 250px;
+            height: 100px;
+          "
+        />
+      </nav>
+
+      <section class="hero__container container">
+        <h1 class="hero__title">
+          Ocupación del Espectro Radioeléctrico en la banda de 915 MHz y 2.4 GHz
+        </h1>
+        <p class="hero__paragraph">
+          El aumento de la demanda de servicios de radiocomunicaciones exige la
+          utilización más eficaz del espectro radioeléctrico.
+        </p>
+        <a href="mapa/mapa.html" class="cta">Mapa de ocupación</a>
+      </section>
+    </header>
+
+    <main>
+      <section class="container about">
+        <h2 class="subtitle">Fases de la evaluación</h2>
+        <p class="about__paragraph">
+          La medición y evaluación de la ocupación del espectro en el entorno de
+          RF modernos se esta convirtiendo en una tarea cada vez mas compleja y
+          dificil para los servicios de comprovasión técnica debido al aumento
+          de la densidad de sistemas digitales y de bandas de frecuencias
+          compartidas, para ello se analiza a detalle el enfoque implementado.
+        </p>
+
+        <div class="about__main">
+          <article class="about__icons">
+            <img src="./images/meto.png" class="about__icon" />
+            <h3 class="about__title">Metodología implementada</h3>
+            <p class="about__paragrah">
+              Aplicación de la recomendacion UIT-R SM.2256-1 "Medicón y
+              evaluación de la ocupación del espectro"
+            </p>
+            <a href="metodo_imple/met.html" class="cta"> Procedimiento</a>
+            <div class="downloads">
+              <a href="./docs/R-REP-SM.2256-1-2016-PDF-S.pdf" download
+                >Recomendación UIT</a
+              >
+            </div>
+          </article>
+
+          <article class="about__icons">
+            <img src="./images/medi.png" class="about__icon" />
+            <h3 class="about__title">Barridos espectrales</h3>
+            <p class="about__paragrah">
+              Número de muestras obtenidas en las zonas de medición en el
+              transcursos de todos los barridos espectrales
+            </p>
+            <a href="mediciones/mediciones.html" class="cta"> Mediciones</a>
+            <div class="downloads">
+              <a
+                href="./docs/Espectrogramas.zip"
+                download
+                style="display: block; margin: 10px 0"
+                >Espectrogramas</a
+              >
+              <a
+                href="./docs/banda 915Mhz.xlsx"
+                download
+                style="display: block; margin: 10px 0"
+                >Muestras en 915 MHz</a
+              >
+              <a
+                href="./docs/banda 2.4GHz.xlsx"
+                download
+                style="display: block; margin: 10px 0"
+                >Muestras en 2.4 GHz</a
+              >
+            </div>
+          </article>
+
+          <article class="about__icons">
+            <img
+              src="./images/ocu.png"
+              class="about__icon"
+              alt="Ícono de nivel de ocupación"
+            />
+            <h3 class="about__title">Nivel de Ocupación</h3>
+            <p class="about__paragraph">
+              Valores porcentules estimados en las diferentes zonas de medición
+              que conforman el proyecto de regeneración urbana
+            </p>
+            <a href="./ocupación/ocupación_por_canal.html" class="cta"
+              >Ocupación por canal</a
+            >
+            <a href="./ocupación/ocupación_por_banda.html" class="cta"
+              >Ocupación por banda</a
+            >
+            <div class="downloads">
+              <a
+                href="./docs/Estimaciones_porcentuales.zip"
+                download
+                style="display: block; margin: 10px 0"
+                >Porcentajes optenidos
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="questions container">
+        <h2 class="subtitle">Preguntas frecuentes</h2>
+        <p class="questions__paragraph">
+          Resolvemos las dudas más comunes sobre la ocupación espectral.
+        </p>
+
+        <section class="questions__container">
+          <article class="questions__padding">
+            <div class="questions__answer">
+              <h3 class="questions__title">
+                ¿Qué es el uso del espectro radioelectrico?
+                <span class="questions__arrow">
+                  <img src="./images/arrow.svg" class="questions__img" />
+                </span>
+              </h3>
+              <p class="questions__show">
+                El uso u ocupación del espectro se refiere a la Utilización de
+                frecuencias durante un periodo de tiempo (ANE, 2024).
+              </p>
+            </div>
+          </article>
+
+          <article class="questions__padding">
+            <div class="questions__answer">
+              <h3 class="questions__title">
+                ¿Porque efectuar mediciones de ocupación espectral?
+                <span class="questions__arrow">
+                  <img src="./images/arrow.svg" class="questions__img" />
+                </span>
+              </h3>
+              <p class="questions__show">
+                Los informes de uso de espectro brindan información real de la
+                utilizacion de este recurso escaso, siendo insumo para la toma
+                de deciciones en materia de planeación, gestión, vigilancia y
+                control del espectro, fortaleciendo el uso eficiente, legal y
+                libre de interferencias, potenciando actividades como: procesos
+                de selección objetiva, estudios de convivencia, subasta del
+                espectro y despliegue de infraestructura(ANE, 2024).
+              </p>
+            </div>
+          </article>
+        </section>
+      </section>
+    </main>
+    <footer class="footer">
+      <section class="footer__container container">
+        <nav class="nav nav--footer">
+          <h2 class="footer__title">
+            Proyecto de Titulación desarrollado por:
+          </h2>
+          <ul class="nav__link nav__link--footer">
+            <li class="nav__items"><strong>Nombre:</strong> Marco Ordoñez</li>
+            <li class="nav__items"><strong>Cédula:</strong> 1150133385</li>
+            <li class="nav__items">
+              <strong>Correo:</strong> marco.ordonez@unl.edu.ec
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </footer>
+
+    <script src="./js/slider.js"></script>
+    <script src="./js/questions.js"></script>
+    <script src="./js/menu.js"></script>
+
+    <script src="./js/script.js"></script>
+  </body>
+</html>
